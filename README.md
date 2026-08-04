@@ -1,3 +1,88 @@
-# bestbike_matching-
+# BestBike × 教習所マッチング
 
-[Edit in StackBlitz next generation editor ⚡️](https://stackblitz.com/~/github.com/Sho0922/bestbike_matching-)
+バイクレンタル事業「BestBike」が運営する、バイク免許取得の教習所マッチングプラットフォーム。
+
+ユーザーが提携教習所に本プラットフォーム経由で申し込み、教習所が「入会確定」操作を行うと、
+**紹介料 ¥5,000 が計上され、ユーザーに BestBike レンタル永年10%OFF が自動発行される。**
+
+---
+
+## このリポジトリにあるもの
+
+| | 内容 |
+|---|---|
+| [`docs/`](docs/00_index.md) | 設計ドキュメント9本（要件定義・画面仕様・データモデル・API・非機能・開発指示書・テスト計画・見積） |
+| `prototype/index.html` | **クライアント提示用プロトタイプ**。全10画面。ビルド不要・外部通信なしの単体HTML |
+| `src/` | プロトタイプの React ソース |
+
+### まず読むもの
+
+**→ [docs/00_index.md](docs/00_index.md)**
+
+---
+
+## プロトタイプを見る
+
+### ビルド不要（推奨・クライアント提示用）
+
+`prototype/index.html` をブラウザで開くだけ。
+CSS・JS をすべてインライン化しており、**外部への通信が一切発生しない**（検証済み）。
+社内共有サーバに置く、メールに添付する、オフラインで見せる、いずれも可能。
+
+```bash
+open prototype/index.html          # macOS
+xdg-open prototype/index.html      # Linux
+```
+
+### 開発サーバ
+
+```bash
+npm install
+npm start                          # http://localhost:3000
+```
+
+### プロトタイプを再生成する
+
+`src/App.js` を編集したあと：
+
+```bash
+npm run build:prototype            # build → Tailwind CSS生成 → 単体HTMLへインライン化
+```
+
+---
+
+## 画面一覧（全10画面）
+
+| # | 画面 | 区分 |
+|---|---|---|
+| 1 | LP（トップ） | ユーザー |
+| 2 | 教習所一覧（地図・リスト） | ユーザー |
+| 3 | 教習所詳細 | ユーザー |
+| 4 | 入会申込フォーム | ユーザー |
+| 5 | 申込完了 | ユーザー |
+| 6 | マイページ（特典表示） | ユーザー |
+| 7 | 教習所管理画面 | 管理 |
+| 8 | BestBike運営ダッシュボード | 管理 |
+| 9 | 画面遷移図 | ドキュメント |
+| 10 | データフロー図 | ドキュメント |
+
+---
+
+## 開発体制
+
+| 役割 | 担当 |
+|---|---|
+| 要件定義・設計・チケット分解・マージ判断 | プロジェクト責任者（CTO） |
+| 実装・テストコードの記述 | Codex |
+| コードレビュー・仕様突合・受入判定 | Claude Code |
+
+進め方は [docs/06_dev-instructions-codex.md](docs/06_dev-instructions-codex.md) を参照。
+チケットは §3 のブロックをそのまま Codex に貼れる形式になっている。
+
+---
+
+## 現時点の前提
+
+- 企画資料（PDF）は未参照。本ドキュメント群は動作プロトタイプから要件を再構成したもの
+- 確認事項 A〜K（[docs/01_requirements.md §9](docs/01_requirements.md)）が未回答
+- 特に **G（BestBike本体との関係）** は設計全体を左右するため、Phase 1 着手前に確定が必要

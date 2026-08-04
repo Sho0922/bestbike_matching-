@@ -1,1 +1,7 @@
 node_modules
+build
+scripts/.tailwind.out.css
+.env
+.env.local
+.env.*.local
+.DS_Store

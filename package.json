@@ -1,7 +1,8 @@
 {
-  "name": "react.new",
-  "version": "0.0.0",
+  "name": "bestbike-matching-prototype",
+  "version": "0.1.0",
   "private": true,
+  "description": "BestBike × 教習所マッチング — 動作プロトタイプ（全10画面）",
   "dependencies": {
     "lucide-react": "^1.8.0",
     "react": "^18.1.0",
@@ -11,9 +12,24 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:css": "tailwindcss -c tailwind.config.js -i scripts/tailwind-input.css -o scripts/.tailwind.out.css --minify",
+    "build:prototype": "npm run build && npm run build:css && node scripts/build-prototype.js"
   },
   "devDependencies": {
-    "react-scripts": "latest"
+    "react-scripts": "5.0.1",
+    "tailwindcss": "^3.4.17"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
