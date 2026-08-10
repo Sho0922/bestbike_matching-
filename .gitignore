@@ -5,3 +5,6 @@ scripts/.tailwind.out.css
 .env.local
 .env.*.local
 .DS_Store
+
+# Claude Code: 個人ごとの上書き設定。共有設定 .claude/settings.json はコミットする
+.claude/settings.local.json

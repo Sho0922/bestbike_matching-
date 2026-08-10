@@ -14,7 +14,8 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "build:css": "tailwindcss -c tailwind.config.js -i scripts/tailwind-input.css -o scripts/.tailwind.out.css --minify",
-    "build:prototype": "npm run build && npm run build:css && node scripts/build-prototype.js"
+    "build:prototype": "npm run build && npm run build:css && node scripts/build-prototype.js",
+    "setup:shopify": "bash scripts/setup-shopify-toolkit.sh"
   },
   "devDependencies": {
     "react-scripts": "5.0.1",

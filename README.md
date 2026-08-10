@@ -75,6 +75,19 @@ npm run build:prototype            # build → Tailwind CSS生成 → 単体HTML
 進め方は [docs/06_dev-instructions-codex.md](docs/06_dev-instructions-codex.md) を参照。
 チケットは §3 のブロックをそのまま Codex に貼れる形式になっている。
 
+### AI 開発環境（任意）
+
+[Shopify AI Toolkit](docs/10_shopify-ai-toolkit.md) をプロジェクトスコープで導入済み。
+各自の環境で実体を取得するには：
+
+```bash
+npm run setup:shopify     # 実行後に Claude Code を再起動
+```
+
+本プロジェクトの技術スタック（Next.js + Supabase）に Shopify は含まれないため、
+**導入は任意**。常時約2,900トークンを消費する点と、テレメトリを既定でOFFにしている点を含め、
+判断材料は [docs/10_shopify-ai-toolkit.md](docs/10_shopify-ai-toolkit.md) にまとめた。
+
 ---
 
 ## 現時点の前提

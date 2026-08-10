@@ -1,0 +1,16 @@
+{
+  "extraKnownMarketplaces": {
+    "shopify-ai-toolkit": {
+      "source": {
+        "source": "github",
+        "repo": "Shopify/shopify-ai-toolkit"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "shopify-plugin@shopify-ai-toolkit": true
+  },
+  "env": {
+    "OPT_OUT_INSTRUMENTATION": "true"
+  }
+}
