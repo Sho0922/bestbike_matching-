@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  MapPin, Search, ChevronRight, Check, Copy, Clock, Bell, Settings,
+  MapPin, Search, ChevronRight, Check, Copy, Clock, Bell, Settings, Menu,
   Home, Bike, School, FileText, CheckCircle2, AlertCircle, ArrowRight, ArrowDown,
   Zap, Gift, Phone, Mail, User, Users, TrendingUp, Award, Percent, Globe,
   Plus, Trash2, GraduationCap, MessageSquare, Building2, ExternalLink,
@@ -158,9 +158,9 @@ const SCHOOLS = [
 
 // ===== 共通コンポーネント =====
 const inputCls =
-  'w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:border-sky-500';
+  'w-full border border-slate-300 rounded-lg px-3 py-2.5 text-base sm:text-sm bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:border-sky-500';
 
-const BrandLogo = ({ size = 'md' }) => {
+const BrandLogo = ({ size = 'md', dark = false }) => {
   const sizes = { sm: 'text-lg', md: 'text-xl', lg: 'text-3xl' };
   return (
     <div className="flex items-center gap-2">
@@ -168,7 +168,7 @@ const BrandLogo = ({ size = 'md' }) => {
         <Bike className="w-5 h-5 text-white" strokeWidth={2.5} />
       </div>
       <span className={`font-black tracking-tight ${sizes[size]}`}>
-        <span className="text-slate-900">ベスト</span>
+        <span className={dark ? 'text-white' : 'text-slate-900'}>ベスト</span>
         <span className="text-sky-600">Bike</span>
         <span className="text-slate-400 text-xs ml-1 font-semibold">×教習所</span>
       </span>
@@ -212,7 +212,7 @@ const Breadcrumb = ({ items, onNavigate }) => (
 
 const SiteHeader = ({ onNavigate, right }) => (
   <header className="border-b border-slate-200 bg-white sticky top-0 z-20">
-    <div className="max-w-6xl mx-auto px-6 py-3.5 flex items-center justify-between gap-4">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
       <button onClick={() => onNavigate('landing')}>
         <BrandLogo />
       </button>
@@ -233,8 +233,8 @@ const SiteHeader = ({ onNavigate, right }) => (
 );
 
 const SectionCard = ({ title, icon: Icon, children, action }) => (
-  <section className="bg-white border border-slate-200 rounded-2xl p-5">
-    <div className="flex items-center justify-between gap-3 mb-4">
+  <section className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5">
+    <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
       <h2 className="font-bold text-lg flex items-center gap-2">
         {Icon && <Icon className="w-5 h-5 text-slate-400" />}
         {title}
@@ -281,8 +281,8 @@ const ScreenLanding = ({ onNavigate }) => (
             'radial-gradient(circle at 20% 30%, rgba(56,189,248,0.3), transparent 50%), radial-gradient(circle at 80% 70%, rgba(251,146,60,0.2), transparent 50%)',
         }}
       />
-      <div className="relative max-w-6xl mx-auto px-6 py-16 md:py-20">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16 md:py-20">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           <div>
             <div className="inline-flex items-center gap-2 bg-orange-500/20 border border-orange-400/30 rounded-full px-3 py-1 mb-6">
               <Zap className="w-4 h-4 text-orange-300" />
@@ -295,20 +295,20 @@ const ScreenLanding = ({ onNavigate }) => (
               <br />
               <span className="text-sky-400">もっとおトクに。</span>
             </h1>
-            <p className="text-lg text-slate-300 mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg text-slate-300 mb-8 leading-relaxed">
               ベストBike提携教習所を<strong className="text-white">卒業</strong>すると、
-              <br />
+              <br className="hidden sm:block" />
               ベストBikeで使えるクーポンを2種類お渡しします。
             </p>
             <button
               onClick={() => onNavigate('areaPref')}
-              className="bg-orange-500 hover:bg-orange-600 text-white font-bold px-7 py-3.5 rounded-lg inline-flex items-center gap-2"
+              className="bg-orange-500 hover:bg-orange-600 text-white font-bold px-7 py-3.5 rounded-lg inline-flex w-full sm:w-auto justify-center items-center gap-2"
             >
               教習所を探す <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 shadow-2xl">
+          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5 sm:p-6 shadow-2xl">
             <div className="flex items-center gap-3 mb-4">
               <Gift className="w-6 h-6 text-orange-300" />
               <span className="font-bold text-lg">卒業でもらえる特典</span>
@@ -351,9 +351,9 @@ const ScreenLanding = ({ onNavigate }) => (
       </div>
     </section>
 
-    <section className="py-16 max-w-6xl mx-auto px-6">
-      <h2 className="text-3xl font-black text-center mb-3">たった3ステップ</h2>
-      <p className="text-center text-slate-500 mb-12">教習所さがしから、特典の受け取りまで</p>
+    <section className="py-12 sm:py-16 max-w-6xl mx-auto px-4 sm:px-6">
+      <h2 className="text-2xl sm:text-3xl font-black text-center mb-3">たった3ステップ</h2>
+      <p className="text-center text-slate-500 mb-8 sm:mb-12">教習所さがしから、特典の受け取りまで</p>
       <div className="grid md:grid-cols-3 gap-6">
         {[
           { n: '01', title: '教習所を選ぶ', desc: 'お住まいの都道府県・市区町村から、通いやすい提携教習所を選択', icon: MapPin },
@@ -370,8 +370,8 @@ const ScreenLanding = ({ onNavigate }) => (
       </div>
     </section>
 
-    <section className="bg-slate-50 py-16">
-      <div className="max-w-4xl mx-auto px-6 text-center">
+    <section className="bg-slate-50 py-12 sm:py-16">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
         <h2 className="text-2xl font-black mb-2">エリアから探す</h2>
         <p className="text-slate-600 mb-8 text-sm">都道府県 → 市区町村の順に絞り込めます</p>
         <div className="flex flex-wrap justify-center gap-2 mb-8">
@@ -387,7 +387,7 @@ const ScreenLanding = ({ onNavigate }) => (
         </div>
         <button
           onClick={() => onNavigate('areaPref')}
-          className="bg-sky-600 hover:bg-sky-700 text-white font-bold text-lg px-8 py-4 rounded-xl inline-flex items-center gap-2"
+          className="bg-sky-600 hover:bg-sky-700 text-white font-bold text-lg px-8 py-4 rounded-xl inline-flex w-full sm:w-auto justify-center items-center gap-2"
         >
           すべてのエリアを見る <ArrowRight className="w-5 h-5" />
         </button>
@@ -400,16 +400,16 @@ const ScreenLanding = ({ onNavigate }) => (
 const ScreenAreaPref = ({ onNavigate, setPref }) => (
   <div className="bg-slate-50 min-h-full">
     <SiteHeader onNavigate={onNavigate} />
-    <div className="max-w-5xl mx-auto px-6 py-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
       <Breadcrumb items={[{ label: 'ホーム', to: 'landing' }, { label: '教習所を探す' }]} onNavigate={onNavigate} />
-      <h1 className="text-3xl font-black mt-3 mb-2">都道府県から探す</h1>
+      <h1 className="text-2xl sm:text-3xl font-black mt-3 mb-2">都道府県から探す</h1>
       <p className="text-sm text-slate-500 mb-8">
         通える範囲の教習所をお選びください。数字は提携教習所の掲載件数です。
       </p>
 
       <div className="space-y-6">
         {REGIONS.map((region) => (
-          <div key={region.name} className="bg-white border border-slate-200 rounded-2xl p-5">
+          <div key={region.name} className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5">
             <h2 className="font-bold text-lg mb-4">{region.name}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {region.prefectures.map((p) => {
@@ -422,7 +422,7 @@ const ScreenAreaPref = ({ onNavigate, setPref }) => (
                       setPref(p);
                       onNavigate('areaCity');
                     }}
-                    className={`flex items-center justify-between border rounded-lg px-4 py-3 text-sm text-left transition ${
+                    className={`flex items-center justify-between border rounded-lg px-3 sm:px-4 py-3 text-sm text-left transition ${
                       disabled
                         ? 'border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed'
                         : 'border-slate-200 hover:border-sky-400 hover:bg-sky-50 font-semibold'
@@ -452,7 +452,7 @@ const ScreenAreaCity = ({ onNavigate, pref, setCity }) => {
   return (
     <div className="bg-slate-50 min-h-full">
       <SiteHeader onNavigate={onNavigate} />
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         <Breadcrumb
           items={[
             { label: 'ホーム', to: 'landing' },
@@ -461,7 +461,7 @@ const ScreenAreaCity = ({ onNavigate, pref, setCity }) => {
           ]}
           onNavigate={onNavigate}
         />
-        <h1 className="text-3xl font-black mt-3 mb-2">{pref.name}の教習所</h1>
+        <h1 className="text-2xl sm:text-3xl font-black mt-3 mb-2">{pref.name}の教習所</h1>
         <p className="text-sm text-slate-500 mb-8">市区町村を選んでください</p>
 
         <div className="bg-white border border-slate-200 rounded-2xl divide-y divide-slate-100">
@@ -508,7 +508,7 @@ const ScreenList = ({ onNavigate, pref, city, setSchool, heldFilter, setHeldFilt
   return (
     <div className="bg-slate-50 min-h-full">
       <SiteHeader onNavigate={onNavigate} />
-      <div className="max-w-5xl mx-auto px-6 py-6">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
         <Breadcrumb
           items={[
             { label: 'ホーム', to: 'landing' },
@@ -522,8 +522,9 @@ const ScreenList = ({ onNavigate, pref, city, setSchool, heldFilter, setHeldFilt
           {city.name === 'すべて' ? pref.name : city.name}の教習所 {schools.length}件
         </h1>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-5 flex flex-wrap items-end gap-4">
-          <div>
+        {/* スマホは2列のグリッド（保有免許だけ全幅）、sm以上は横並び */}
+        <div className="bg-white border border-slate-200 rounded-xl p-4 mb-5 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-end sm:gap-4">
+          <div className="col-span-2 sm:col-span-1">
             <label className="block text-xs font-bold text-slate-500 mb-1.5" htmlFor="held-filter">
               現在お持ちの免許
             </label>
@@ -531,7 +532,7 @@ const ScreenList = ({ onNavigate, pref, city, setSchool, heldFilter, setHeldFilt
               id="held-filter"
               value={heldFilter}
               onChange={(e) => setHeldFilter(e.target.value)}
-              className="border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white"
+              className="w-full sm:w-auto border border-slate-300 rounded-lg px-3 py-2 text-base sm:text-sm bg-white"
             >
               <option value="">指定しない</option>
               {Object.entries(HELD_LICENSES).map(([k, v]) => (
@@ -543,7 +544,7 @@ const ScreenList = ({ onNavigate, pref, city, setSchool, heldFilter, setHeldFilt
             <label className="block text-xs font-bold text-slate-500 mb-1.5" htmlFor="desired-filter">
               希望免許
             </label>
-            <select id="desired-filter" className="border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white">
+            <select id="desired-filter" className="w-full sm:w-auto border border-slate-300 rounded-lg px-3 py-2 text-base sm:text-sm bg-white">
               <option>すべて</option>
               {Object.entries(DESIRED_LICENSES).map(([k, v]) => (
                 <option key={k}>{v.label}</option>
@@ -552,13 +553,13 @@ const ScreenList = ({ onNavigate, pref, city, setSchool, heldFilter, setHeldFilt
           </div>
           <div>
             <label className="block text-xs font-bold text-slate-500 mb-1.5" htmlFor="sort">並び替え</label>
-            <select id="sort" className="border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white">
+            <select id="sort" className="w-full sm:w-auto border border-slate-300 rounded-lg px-3 py-2 text-base sm:text-sm bg-white">
               <option>価格が安い順</option>
               <option>新着順</option>
             </select>
           </div>
-          <div className="text-xs text-slate-500 flex items-center gap-1.5 ml-auto">
-            <Info className="w-3.5 h-3.5" />
+          <div className="col-span-2 text-xs text-slate-500 flex items-start sm:items-center gap-1.5 sm:ml-auto">
+            <Info className="w-3.5 h-3.5 flex-shrink-0 mt-px sm:mt-0" />
             保有免許を選ぶと、その条件での料金が表示されます
           </div>
         </div>
@@ -579,7 +580,7 @@ const ScreenList = ({ onNavigate, pref, city, setSchool, heldFilter, setHeldFilt
                   <div className={`sm:w-44 h-32 sm:h-auto bg-gradient-to-br ${school.thumb} flex items-center justify-center flex-shrink-0`}>
                     <School className="w-12 h-12 text-white/80" strokeWidth={1.5} />
                   </div>
-                  <div className="flex-1 p-5">
+                  <div className="flex-1 p-4 sm:p-5">
                     <h3 className="font-bold text-lg mb-2">{school.name}</h3>
                     <div className="space-y-1 text-xs text-slate-600 mb-3">
                       <div className="flex items-start gap-1.5">
@@ -639,7 +640,7 @@ const ScreenDetail = ({ onNavigate, school, heldFilter, setHeldFilter }) => {
   return (
     <div className="bg-slate-50 min-h-full pb-24 lg:pb-0">
       <SiteHeader onNavigate={onNavigate} />
-      <div className="max-w-5xl mx-auto px-6 py-6">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
         <Breadcrumb
           items={[
             { label: 'ホーム', to: 'landing' },
@@ -650,11 +651,11 @@ const ScreenDetail = ({ onNavigate, school, heldFilter, setHeldFilter }) => {
           onNavigate={onNavigate}
         />
 
-        <div className="grid grid-cols-4 gap-2 mt-4 mb-6">
+        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-4 mb-6">
           {[0, 1, 2, 3].map((i) => (
             <div
               key={i}
-              className={`${i === 0 ? 'col-span-4 sm:col-span-2 sm:row-span-2 h-48 sm:h-64' : 'h-24 sm:h-32'} rounded-xl overflow-hidden flex items-center justify-center ${
+              className={`${i === 0 ? 'col-span-3 sm:col-span-2 sm:row-span-2 h-48 sm:h-64' : 'h-24 sm:h-32'} rounded-xl overflow-hidden flex items-center justify-center ${
                 i < school.photoCount
                   ? `bg-gradient-to-br ${school.thumb}`
                   : 'bg-slate-100 border border-dashed border-slate-300'
@@ -670,9 +671,9 @@ const ScreenDetail = ({ onNavigate, school, heldFilter, setHeldFilter }) => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-5">
+          <div className="lg:col-span-2 space-y-5 min-w-0">
             <div>
-              <h1 className="text-3xl font-black mb-2">{school.name}</h1>
+              <h1 className="text-2xl sm:text-3xl font-black mb-2">{school.name}</h1>
               <Pill color="sky">{school.city}</Pill>
             </div>
 
@@ -698,10 +699,10 @@ const ScreenDetail = ({ onNavigate, school, heldFilter, setHeldFilter }) => {
                   { label: 'メールアドレス', value: school.email, Icon: Mail },
                   { label: 'ホームページ', value: school.website, Icon: Globe },
                 ].map(({ label, value, Icon }) => (
-                  <div key={label} className="flex gap-3">
+                  <div key={label} className="flex flex-wrap sm:flex-nowrap gap-x-3 gap-y-0.5">
                     <Icon className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
-                    <dt className="w-28 text-slate-500 flex-shrink-0">{label}</dt>
-                    <dd className="flex-1 break-all">{value}</dd>
+                    <dt className="text-xs sm:text-sm sm:w-28 text-slate-500 flex-shrink-0 self-center sm:self-auto">{label}</dt>
+                    <dd className="w-full sm:w-auto sm:flex-1 pl-7 sm:pl-0 break-all">{value}</dd>
                   </div>
                 ))}
               </dl>
@@ -731,7 +732,7 @@ const ScreenDetail = ({ onNavigate, school, heldFilter, setHeldFilter }) => {
                 <select
                   value={heldFilter}
                   onChange={(e) => setHeldFilter(e.target.value)}
-                  className="border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs bg-white"
+                  className="border border-slate-300 rounded-lg px-2.5 py-1.5 text-base sm:text-xs bg-white"
                   aria-label="保有免許で絞り込む"
                 >
                   <option value="">保有免許で絞り込む</option>
@@ -743,7 +744,34 @@ const ScreenDetail = ({ onNavigate, school, heldFilter, setHeldFilter }) => {
             >
               <div className="mb-6">
                 <h3 className="text-sm font-bold mb-2">教習費用</h3>
-                <div className="overflow-x-auto">
+                {/* スマホ：1行を1枚のカードにして横スクロールをなくす */}
+                <ul className="sm:hidden border-y border-slate-100 divide-y divide-slate-100">
+                  {school.tuition.map((t) => {
+                    const match = highlighted && t.held === highlighted;
+                    const dim = highlighted && !match;
+                    return (
+                      <li
+                        key={`${t.desired}-${t.held}`}
+                        className={`py-3 ${dim ? 'opacity-30' : ''} ${match ? 'bg-sky-50 -mx-4 px-4' : ''}`}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <div className="font-semibold text-sm">{DESIRED_LICENSES[t.desired].label}</div>
+                            <div className="text-xs text-slate-500 mt-0.5">
+                              現在お持ちの免許：{HELD_LICENSES[t.held]}
+                            </div>
+                          </div>
+                          <div className="text-right flex-shrink-0 whitespace-nowrap">
+                            <span className="font-black">{yen(t.price)}</span>
+                            <span className="text-[11px] text-slate-400 ml-1">{t.taxIncluded ? '税込' : '税別'}</span>
+                          </div>
+                        </div>
+                        {t.note && <div className="text-xs text-slate-500 mt-1">備考：{t.note}</div>}
+                      </li>
+                    );
+                  })}
+                </ul>
+                <div className="hidden sm:block overflow-x-auto">
                   <table className="w-full text-sm min-w-[520px]">
                     <thead className="bg-slate-50 text-xs text-slate-500">
                       <tr>
@@ -779,7 +807,25 @@ const ScreenDetail = ({ onNavigate, school, heldFilter, setHeldFilter }) => {
 
               <div>
                 <h3 className="text-sm font-bold mb-2">別途費用</h3>
-                <div className="overflow-x-auto">
+                <ul className="sm:hidden border-y border-slate-100 divide-y divide-slate-100 text-sm">
+                  {school.extras.map((e) => (
+                    <li key={e.name} className="py-2.5">
+                      <div className="flex items-start justify-between gap-3">
+                        <span className="font-semibold">{e.name}</span>
+                        <span className="whitespace-nowrap">
+                          <span className="font-bold">{yen(e.price)}</span>
+                          <span className="text-[11px] text-slate-400 ml-1">{e.taxIncluded ? '税込' : '税別'}</span>
+                        </span>
+                      </div>
+                      {e.note && <div className="text-xs text-slate-500 mt-0.5">{e.note}</div>}
+                    </li>
+                  ))}
+                  <li className="py-2.5 -mx-4 px-4 bg-slate-50 flex items-center justify-between gap-3">
+                    <span className="font-bold">別途費用 合計</span>
+                    <span className="font-black whitespace-nowrap">{yen(extras)}</span>
+                  </li>
+                </ul>
+                <div className="hidden sm:block overflow-x-auto">
                   <table className="w-full text-sm min-w-[420px]">
                     <thead className="bg-slate-50 text-xs text-slate-500">
                       <tr>
@@ -872,7 +918,7 @@ const ScreenDetail = ({ onNavigate, school, heldFilter, setHeldFilter }) => {
         </div>
       </div>
 
-      <div className="lg:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 p-3 flex gap-2 z-30">
+      <div className="lg:hidden fixed bottom-0 inset-x-0 md:left-60 bg-white border-t border-slate-200 p-3 flex gap-2 z-30">
         <button
           onClick={() => onNavigate('inquiry')}
           className="flex-1 border border-slate-300 text-slate-700 font-semibold py-3 rounded-xl text-sm"
@@ -913,7 +959,7 @@ const ScreenApply = ({ onNavigate, school }) => {
         right={<button onClick={() => onNavigate('detail')} className="text-sm text-slate-500">← 戻る</button>}
       />
 
-      <div className="max-w-3xl mx-auto px-6 py-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         <div className="flex items-center justify-center gap-2 mb-8">
           {['情報入力', '確認', '完了'].map((label, i) => (
             <React.Fragment key={label}>
@@ -923,17 +969,17 @@ const ScreenApply = ({ onNavigate, school }) => {
                 </div>
                 <div className={`text-xs mt-1 font-semibold ${i === 0 ? 'text-sky-700' : 'text-slate-400'}`}>{label}</div>
               </div>
-              {i < 2 && <div className="w-16 h-0.5 bg-slate-200 -mt-5" />}
+              {i < 2 && <div className="w-10 sm:w-16 h-0.5 bg-slate-200 -mt-5" />}
             </React.Fragment>
           ))}
         </div>
 
-        <div className="bg-gradient-to-r from-sky-600 to-blue-700 text-white rounded-2xl p-5 mb-4 flex items-center gap-3">
+        <div className="bg-gradient-to-r from-sky-600 to-blue-700 text-white rounded-2xl p-4 sm:p-5 mb-4 flex items-center gap-3">
           <Sparkles className="w-8 h-8 flex-shrink-0" />
-          <div className="font-bold text-lg">一度で登録完了！ベストBikeでの無料会員に自動連携致します！</div>
+          <div className="font-bold text-base sm:text-lg">一度で登録完了！ベストBikeでの無料会員に自動連携致します！</div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-4">
+        <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 mb-4">
           <h1 className="text-2xl font-black mb-1">仮申込フォーム</h1>
           <div className="text-sm text-slate-500 mb-6">{school.name}</div>
 
@@ -1034,12 +1080,12 @@ const ScreenApply = ({ onNavigate, school }) => {
 
           <div className="mt-6 border-t border-slate-100 pt-5 space-y-2.5">
             {CONSENTS.map((text, i) => (
-              <label key={text} className="flex gap-2.5 text-xs text-slate-700 cursor-pointer items-start">
+              <label key={text} className="flex gap-2.5 text-sm sm:text-xs text-slate-700 cursor-pointer items-start">
                 <input
                   type="checkbox"
                   checked={agreed[i]}
                   onChange={() => toggle(i)}
-                  className="mt-0.5 w-4 h-4 accent-sky-600 flex-shrink-0"
+                  className="mt-0.5 w-5 h-5 sm:w-4 sm:h-4 accent-sky-600 flex-shrink-0"
                 />
                 <span>
                   {text}
@@ -1075,12 +1121,12 @@ const ScreenApply = ({ onNavigate, school }) => {
 const ScreenComplete = ({ onNavigate, school }) => (
   <div className="bg-slate-50 min-h-full">
     <SiteHeader onNavigate={onNavigate} right={<span />} />
-    <div className="max-w-2xl mx-auto px-6 py-12">
-      <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center mb-6">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 text-center mb-6">
         <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <CheckCircle2 className="w-12 h-12 text-emerald-600" strokeWidth={2} />
         </div>
-        <h1 className="text-3xl font-black mb-2">仮申込を受け付けました</h1>
+        <h1 className="text-2xl sm:text-3xl font-black mb-2">仮申込を受け付けました</h1>
         <p className="text-slate-600 mb-6 text-sm leading-relaxed">
           {school.name}に仮申込を送信しました。
           <br />
@@ -1117,7 +1163,7 @@ const ScreenComplete = ({ onNavigate, school }) => (
         </div>
       </div>
 
-      <div className="flex gap-3">
+      <div className="flex flex-col sm:flex-row gap-3">
         <button onClick={() => onNavigate('mypage')} className="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-xl">
           マイページで状況を確認
         </button>
@@ -1138,9 +1184,9 @@ const ScreenInquiry = ({ onNavigate, school }) => {
         onNavigate={onNavigate}
         right={<button onClick={() => onNavigate('detail')} className="text-sm text-slate-500">← 戻る</button>}
       />
-      <div className="max-w-2xl mx-auto px-6 py-8">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
         {sent ? (
-          <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center">
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 text-center">
             <MessageSquare className="w-14 h-14 text-emerald-500 mx-auto mb-4" strokeWidth={1.5} />
             <h1 className="text-2xl font-black mb-2">問合せを送信しました</h1>
             <p className="text-sm text-slate-600 mb-6">
@@ -1153,7 +1199,7 @@ const ScreenInquiry = ({ onNavigate, school }) => {
             </button>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-slate-200 p-6">
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6">
             <h1 className="text-2xl font-black mb-1">問合せ</h1>
             <div className="text-sm text-slate-500 mb-6">{school.name}</div>
 
@@ -1222,11 +1268,11 @@ const ScreenMypage = ({ onNavigate, school, status, coupons }) => (
       }
     />
 
-    <div className="max-w-3xl mx-auto px-6 py-8">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
       <h1 className="text-2xl font-black mb-6">マイページ</h1>
 
       {status === 'graduated' && coupons && (
-        <div className="bg-gradient-to-br from-slate-900 to-blue-900 text-white rounded-2xl p-6 relative overflow-hidden mb-6">
+        <div className="bg-gradient-to-br from-slate-900 to-blue-900 text-white rounded-2xl p-5 sm:p-6 relative overflow-hidden mb-6">
           <div className="absolute top-0 right-0 opacity-10">
             <GraduationCap className="w-44 h-44" strokeWidth={1} />
           </div>
@@ -1250,7 +1296,7 @@ const ScreenMypage = ({ onNavigate, school, status, coupons }) => (
                       コピー
                     </button>
                   </div>
-                  <div className="font-mono text-xl font-black tracking-wider">{c.code}</div>
+                  <div className="font-mono text-lg sm:text-xl font-black tracking-wider break-all">{c.code}</div>
                   <div className="text-[11px] text-slate-300 mt-1.5">
                     {c.expires ? `有効期限 ${c.expires}` : '有効期限なし'} ／ {c.usage}
                   </div>
@@ -1279,7 +1325,7 @@ const ScreenMypage = ({ onNavigate, school, status, coupons }) => (
         </div>
       )}
 
-      <div className="bg-white border border-slate-200 rounded-2xl p-6">
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6">
         <h2 className="font-bold text-lg mb-4">申込状況</h2>
         <div className="flex items-start gap-4 mb-5">
           <div className={`w-14 h-14 bg-gradient-to-br ${school.thumb} rounded-xl flex items-center justify-center flex-shrink-0`}>
@@ -1386,6 +1432,32 @@ const ScreenSchoolAdmin = ({ status, onAdvance, onGraduate }) => {
   const activeTab = tabs.find((t) => t.key === tab);
   const filtered = activeTab.match ? rows.filter((r) => activeTab.match.includes(r.status)) : rows;
 
+  // 行の操作ボタン。表（PC）とカード（スマホ）で共通。スマホは指で押しやすい大きさにする
+  const renderActions = (row, mobile = false) => {
+    const btn = mobile ? 'px-4 py-2 text-sm rounded-lg' : 'px-3 py-1 text-xs rounded';
+    if (!row.primary) {
+      return mobile ? null : <button className="text-xs text-sky-600 font-semibold">詳細</button>;
+    }
+    return (
+      <div className={`flex flex-wrap ${mobile ? 'gap-2' : 'gap-1.5'}`}>
+        <button className={`border border-slate-300 text-slate-600 inline-flex items-center gap-1 ${mobile ? btn : 'text-xs px-2.5 py-1 rounded'}`}>
+          <Mail className={mobile ? 'w-4 h-4' : 'w-3 h-3'} />メール
+        </button>
+        {inWaiting && (
+          <button onClick={() => setDialog('entry')} className={`bg-sky-600 hover:bg-sky-700 text-white font-bold ${btn}`}>
+            入校
+          </button>
+        )}
+        {inTraining && (
+          <button onClick={() => setDialog('graduate')} className={`bg-emerald-600 hover:bg-emerald-700 text-white font-bold ${btn}`}>
+            卒業
+          </button>
+        )}
+        {isGraduated && <span className={`text-emerald-700 font-bold self-center ${mobile ? 'text-sm' : 'text-xs'}`}>特典発行済</span>}
+      </div>
+    );
+  };
+
   const summary = [
     { label: '入校待ち', value: rows.filter((r) => ['provisional', 'entry_review'].includes(r.status)).length, unit: '件' },
     { label: '教習中', value: rows.filter((r) => ['entry_confirmed', 'in_training'].includes(r.status)).length, unit: '件' },
@@ -1396,7 +1468,7 @@ const ScreenSchoolAdmin = ({ status, onAdvance, onGraduate }) => {
   return (
     <div className="bg-slate-100 min-h-full">
       <header className="bg-slate-900 text-white">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 flex-wrap">
             <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center">
               <School className="w-5 h-5 text-white" />
@@ -1408,15 +1480,15 @@ const ScreenSchoolAdmin = ({ status, onAdvance, onGraduate }) => {
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-6 py-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
         <h1 className="text-2xl font-black mb-6">ベストBike経由の申込</h1>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6">
           {summary.map((s) => (
             <div key={s.label} className="bg-white rounded-xl p-4 border border-slate-200">
               <div className="text-xs text-slate-500 mb-1">{s.label}</div>
               <div className="flex items-baseline gap-1">
-                <div className="text-3xl font-black">{s.value}</div>
+                <div className="text-2xl sm:text-3xl font-black">{s.value}</div>
                 <div className="text-xs text-slate-500">{s.unit}</div>
               </div>
             </div>
@@ -1438,7 +1510,32 @@ const ScreenSchoolAdmin = ({ status, onAdvance, onGraduate }) => {
             ))}
           </div>
 
-          <div className="overflow-x-auto">
+          {/* スマホ：申込1件を1枚のカードに。操作ボタンを横スクロールせずに押せるようにする */}
+          <ul className="md:hidden divide-y divide-slate-100">
+            {filtered.map((row) => (
+              <li key={row.no} className={`p-4 ${row.primary ? 'bg-sky-50/40' : ''}`}>
+                <div className="flex items-center justify-between gap-3">
+                  <span className="font-bold">{row.name}</span>
+                  <StatusPill status={row.status} />
+                </div>
+                <div className="font-mono text-[11px] text-slate-400 mt-0.5">{row.no}</div>
+                <div className="text-xs text-slate-600 mt-2 flex flex-wrap gap-x-3 gap-y-1">
+                  <span>
+                    {DESIRED_LICENSES[row.desired].label}
+                    <span className="text-slate-400"> / {HELD_LICENSES[row.held]}</span>
+                  </span>
+                  <span className="font-bold text-slate-900">{yen(row.price)}</span>
+                  <span>ご案内：{row.contact}</span>
+                </div>
+                {row.primary && <div className="mt-3">{renderActions(row, true)}</div>}
+              </li>
+            ))}
+          </ul>
+          {filtered.length === 0 && (
+            <div className="px-4 py-10 text-center text-sm text-slate-400">該当する申込はありません</div>
+          )}
+
+          <div className={filtered.length === 0 ? 'hidden' : 'hidden md:block overflow-x-auto'}>
             <table className="w-full text-sm min-w-[760px]">
               <thead className="bg-slate-50 text-xs text-slate-500">
                 <tr>
@@ -1463,34 +1560,7 @@ const ScreenSchoolAdmin = ({ status, onAdvance, onGraduate }) => {
                     <td className="p-3 text-right font-bold whitespace-nowrap">{yen(row.price)}</td>
                     <td className="p-3 text-xs text-slate-600">{row.contact}</td>
                     <td className="p-3"><StatusPill status={row.status} /></td>
-                    <td className="p-3">
-                      {row.primary ? (
-                        <div className="flex gap-1.5 flex-wrap">
-                          <button className="border border-slate-300 text-slate-600 text-xs px-2.5 py-1 rounded inline-flex items-center gap-1">
-                            <Mail className="w-3 h-3" />メール
-                          </button>
-                          {inWaiting && (
-                            <button
-                              onClick={() => setDialog('entry')}
-                              className="bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold px-3 py-1 rounded"
-                            >
-                              入校
-                            </button>
-                          )}
-                          {inTraining && (
-                            <button
-                              onClick={() => setDialog('graduate')}
-                              className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded"
-                            >
-                              卒業
-                            </button>
-                          )}
-                          {isGraduated && <span className="text-xs text-emerald-700 font-bold">特典発行済</span>}
-                        </div>
-                      ) : (
-                        <button className="text-xs text-sky-600 font-semibold">詳細</button>
-                      )}
-                    </td>
+                    <td className="p-3">{renderActions(row)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -1509,8 +1579,9 @@ const ScreenSchoolAdmin = ({ status, onAdvance, onGraduate }) => {
       </div>
 
       {dialog && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-6 z-50">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6">
+        // スマホでは画面下から出るシート、sm以上は中央のダイアログ
+        <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center sm:p-6 z-50">
+          <div className="bg-white rounded-t-2xl sm:rounded-2xl max-w-md w-full p-6 pb-8 sm:pb-6">
             <div className="flex items-start justify-between mb-4">
               <h3 className="font-black text-lg">{dialog === 'entry' ? '入校確定にします' : '卒業にします'}</h3>
               <button onClick={() => setDialog(null)} className="text-slate-400 hover:text-slate-600" aria-label="閉じる">
@@ -1564,12 +1635,15 @@ const ScreenSchoolAdmin = ({ status, onAdvance, onGraduate }) => {
 };
 
 // ===== 画面11: 自社情報・料金管理 =====
+// スマホ用の入力欄。16px未満だとiPhoneでタップ時に画面が拡大されるため text-base にする
+const mobileCtl = 'w-full border border-slate-300 rounded-lg px-2.5 py-2 text-base bg-white';
+
 const ScreenSchoolSettings = () => {
   const school = SCHOOLS[0];
   return (
     <div className="bg-slate-100 min-h-full">
       <header className="bg-slate-900 text-white">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center gap-3">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-3">
           <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center">
             <Settings className="w-5 h-5 text-white" />
           </div>
@@ -1577,7 +1651,7 @@ const ScreenSchoolSettings = () => {
         </div>
       </header>
 
-      <div className="max-w-5xl mx-auto px-6 py-6 space-y-5">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-5">
         <SectionCard
           title="基本情報"
           icon={Building2}
@@ -1601,7 +1675,7 @@ const ScreenSchoolSettings = () => {
         </SectionCard>
 
         <SectionCard title="写真（最大4枚）" icon={ImageIcon}>
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[0, 1, 2, 3].map((i) => (
               <div
                 key={i}
@@ -1625,7 +1699,48 @@ const ScreenSchoolSettings = () => {
             </button>
           }
         >
-          <div className="overflow-x-auto">
+          {/* スマホ：1行を1枚の入力カードに。入力欄は16pxにしてiPhoneの自動拡大を防ぐ */}
+          <ul className="sm:hidden space-y-3">
+            {school.tuition.map((t) => (
+              <li key={`${t.desired}-${t.held}`} className="border border-slate-200 rounded-xl p-3">
+                <div className="grid grid-cols-2 gap-2.5">
+                  <label className="block">
+                    <span className="block text-[11px] font-bold text-slate-500 mb-1">希望免許</span>
+                    <select className={mobileCtl} defaultValue={t.desired}>
+                      {Object.entries(DESIRED_LICENSES).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
+                    </select>
+                  </label>
+                  <label className="block">
+                    <span className="block text-[11px] font-bold text-slate-500 mb-1">現在お持ちの免許</span>
+                    <select className={mobileCtl} defaultValue={t.held}>
+                      {Object.entries(HELD_LICENSES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                    </select>
+                  </label>
+                  <label className="block">
+                    <span className="block text-[11px] font-bold text-slate-500 mb-1">料金（円）</span>
+                    <input defaultValue={t.price} inputMode="numeric" className={`${mobileCtl} text-right`} />
+                  </label>
+                  <label className="block">
+                    <span className="block text-[11px] font-bold text-slate-500 mb-1">税</span>
+                    <select className={mobileCtl} defaultValue={t.taxIncluded ? 'in' : 'ex'}>
+                      <option value="in">税込</option>
+                      <option value="ex">税別</option>
+                    </select>
+                  </label>
+                  <label className="block col-span-2">
+                    <span className="block text-[11px] font-bold text-slate-500 mb-1">備考</span>
+                    <input defaultValue={t.note} placeholder="—" className={mobileCtl} />
+                  </label>
+                </div>
+                <div className="flex justify-end mt-2">
+                  <button className="text-xs text-red-500 font-semibold inline-flex items-center gap-1 py-1">
+                    <Trash2 className="w-3.5 h-3.5" />この行を削除
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className="hidden sm:block overflow-x-auto relative">
             <table className="w-full text-sm min-w-[640px]">
               <thead className="bg-slate-50 text-xs text-slate-500">
                 <tr>
@@ -1690,7 +1805,32 @@ const ScreenSchoolSettings = () => {
             </button>
           }
         >
-          <table className="w-full text-sm">
+          <ul className="sm:hidden space-y-3">
+            {school.extras.map((e) => (
+              <li key={e.name} className="border border-slate-200 rounded-xl p-3">
+                <div className="grid grid-cols-2 gap-2.5">
+                  <label className="block col-span-2">
+                    <span className="block text-[11px] font-bold text-slate-500 mb-1">詳細</span>
+                    <input defaultValue={e.name} className={mobileCtl} />
+                  </label>
+                  <label className="block">
+                    <span className="block text-[11px] font-bold text-slate-500 mb-1">費用（円）</span>
+                    <input defaultValue={e.price} inputMode="numeric" className={`${mobileCtl} text-right`} />
+                  </label>
+                  <label className="block">
+                    <span className="block text-[11px] font-bold text-slate-500 mb-1">備考</span>
+                    <input defaultValue={e.note} placeholder="—" className={mobileCtl} />
+                  </label>
+                </div>
+                <div className="flex justify-end mt-2">
+                  <button className="text-xs text-red-500 font-semibold inline-flex items-center gap-1 py-1">
+                    <Trash2 className="w-3.5 h-3.5" />この行を削除
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <table className="hidden sm:table w-full text-sm">
             <thead className="bg-slate-50 text-xs text-slate-500">
               <tr>
                 <th scope="col" className="text-left p-2.5 font-semibold">詳細</th>
@@ -1752,23 +1892,35 @@ const ScreenAdminDash = () => {
     (a, s) => ({ waiting: a.waiting + s.waiting, training: a.training + s.training, graduated: a.graduated + s.graduated }),
     { waiting: 0, training: 0, graduated: 0 }
   );
+  const alerts = [
+    { no: 'BB-EDU-2026-05120933', school: '府中ドライビングスクール', note: '標準期間+34日を超過' },
+    { no: 'BB-EDU-2026-05281102', school: '駒沢モータースクール', note: 'ユーザーが「卒業しました」と申告' },
+  ];
+
+  // スマホの売上カード：4つの数字を横に並べる
+  const salesCells = (s) => [
+    ['入校待ち', s.waiting],
+    ['入校', s.training],
+    ['卒業', s.graduated],
+    ['請求額', '—'],
+  ];
 
   return (
     <div className="bg-slate-100 min-h-full">
       <header className="bg-gradient-to-r from-slate-900 to-blue-900 text-white">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <BrandLogo size="sm" />
+            <BrandLogo size="sm" dark />
             <Pill color="orange">運営管理</Pill>
           </div>
           <Settings className="w-5 h-5" />
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-6 py-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
         <h1 className="text-2xl font-black mb-6">運営ダッシュボード</h1>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6">
           {[
             { label: '入校待ち', value: totals.waiting, unit: '名', icon: Clock },
             { label: '教習中', value: totals.training, unit: '名', icon: Users },
@@ -1801,7 +1953,24 @@ const ScreenAdminDash = () => {
               ))}
             </div>
           </div>
-          <div className="overflow-x-auto">
+          <ul className="sm:hidden divide-y divide-slate-100">
+            {[...bySchool.map((s) => ({ ...s, total: false })), { name: '全体', ...totals, total: true }].map((s) => (
+              <li key={s.name} className={`p-4 ${s.total ? 'bg-slate-50' : ''}`}>
+                <div className={`mb-2 ${s.total ? 'font-black' : 'font-semibold'}`}>{s.name}</div>
+                <div className="grid grid-cols-4 gap-2 text-center">
+                  {salesCells(s).map(([label, value]) => (
+                    <div key={label} className={`rounded-lg py-2 ${s.total ? 'bg-white' : 'bg-slate-50'}`}>
+                      <div className="text-[10px] text-slate-500">{label}</div>
+                      <div className={`${value === '—' ? 'text-slate-400' : ''} ${s.total || label === '卒業' ? 'font-black' : 'font-bold'}`}>
+                        {value}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className="hidden sm:block overflow-x-auto">
             <table className="w-full text-sm min-w-[600px]">
               <thead className="bg-slate-50 text-xs text-slate-500">
                 <tr>
@@ -1847,7 +2016,19 @@ const ScreenAdminDash = () => {
           <div className="p-4 border-b border-slate-200">
             <h2 className="font-bold">卒業登録の遅れアラート</h2>
           </div>
-          <table className="w-full text-sm">
+          <ul className="sm:hidden divide-y divide-slate-100">
+            {alerts.map((r) => (
+              <li key={r.no} className="p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="font-semibold text-sm">{r.school}</span>
+                  <Pill color="amber">教習中</Pill>
+                </div>
+                <div className="font-mono text-[11px] text-slate-400 mt-0.5">{r.no}</div>
+                <div className="text-xs text-slate-600 mt-1.5">{r.note}</div>
+              </li>
+            ))}
+          </ul>
+          <table className="hidden sm:table w-full text-sm">
             <thead className="bg-slate-50 text-xs text-slate-500">
               <tr>
                 <th scope="col" className="text-left p-3 font-semibold">申込番号</th>
@@ -1857,10 +2038,7 @@ const ScreenAdminDash = () => {
               </tr>
             </thead>
             <tbody>
-              {[
-                { no: 'BB-EDU-2026-05120933', school: '府中ドライビングスクール', note: '標準期間+34日を超過' },
-                { no: 'BB-EDU-2026-05281102', school: '駒沢モータースクール', note: 'ユーザーが「卒業しました」と申告' },
-              ].map((r) => (
+              {alerts.map((r) => (
                 <tr key={r.no} className="border-t border-slate-100">
                   <td className="p-3 font-mono text-xs">{r.no}</td>
                   <td className="p-3">{r.school}</td>
@@ -1886,7 +2064,7 @@ const FlowBox = ({ color = 'sky', num, title, sub, big = false }) => {
   };
   const badge = { sky: 'bg-sky-500', orange: 'bg-orange-500', emerald: 'bg-emerald-500', slate: 'bg-slate-500' };
   return (
-    <div className={`relative border-2 rounded-xl p-4 ${colors[color]} ${big ? 'w-72' : 'w-52'}`}>
+    <div className={`relative border-2 rounded-xl p-4 ${colors[color]} w-full max-w-xs ${big ? 'sm:w-72' : 'sm:w-52'}`}>
       <div className={`absolute -top-3 -left-3 w-7 h-7 ${badge[color]} text-white rounded-full flex items-center justify-center text-xs font-black`}>
         {num}
       </div>
@@ -1897,26 +2075,26 @@ const FlowBox = ({ color = 'sky', num, title, sub, big = false }) => {
 };
 
 const ScreenFlow = () => (
-  <div className="bg-slate-50 min-h-full p-8">
+  <div className="bg-slate-50 min-h-full p-4 sm:p-8">
     <div className="max-w-5xl mx-auto">
-      <h1 className="text-3xl font-black mb-2">画面遷移図</h1>
+      <h1 className="text-2xl sm:text-3xl font-black mb-2">画面遷移図</h1>
       <p className="text-slate-600 mb-8">エリア選択から、卒業による特典発行まで</p>
 
-      <div className="bg-white rounded-2xl p-8 border border-slate-200">
+      <div className="bg-white rounded-2xl p-4 sm:p-8 border border-slate-200">
         <div className="space-y-5">
-          <div className="flex items-center gap-3 justify-center flex-wrap">
+          <div className="flex flex-col sm:flex-row items-center gap-3 justify-center sm:flex-wrap">
             <FlowBox color="sky" num="1" title="トップ" sub="特典の説明" />
-            <ArrowRight className="w-5 h-5 text-slate-400" />
+            <ArrowRight className="w-5 h-5 text-slate-400 rotate-90 sm:rotate-0 flex-shrink-0" />
             <FlowBox color="sky" num="2" title="都道府県一覧" sub="SUUMO型のエリア階層" />
-            <ArrowRight className="w-5 h-5 text-slate-400" />
+            <ArrowRight className="w-5 h-5 text-slate-400 rotate-90 sm:rotate-0 flex-shrink-0" />
             <FlowBox color="sky" num="3" title="市区町村一覧" sub="件数つき" />
           </div>
 
           <div className="flex justify-center"><ArrowDown className="w-5 h-5 text-slate-400" /></div>
 
-          <div className="flex items-center gap-3 justify-center flex-wrap">
+          <div className="flex flex-col sm:flex-row items-center gap-3 justify-center sm:flex-wrap">
             <FlowBox color="sky" num="4" title="教習所一覧" sub="写真/名称/所在地/TEL/HP/特色/価格例" />
-            <ArrowRight className="w-5 h-5 text-slate-400" />
+            <ArrowRight className="w-5 h-5 text-slate-400 rotate-90 sm:rotate-0 flex-shrink-0" />
             <FlowBox color="sky" num="5" title="教習所詳細" sub="料金2表 / 写真4枚 / Google地図" />
           </div>
 
@@ -1925,24 +2103,24 @@ const ScreenFlow = () => (
             <div className="flex flex-col items-center"><ArrowDown className="w-5 h-5 text-slate-400" /><span className="text-xs font-bold text-slate-500">質問する</span></div>
           </div>
 
-          <div className="flex items-start gap-6 justify-center flex-wrap">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 justify-center sm:flex-wrap">
             <FlowBox color="orange" num="6" title="仮申込フォーム" sub="10項目 + 同意4件" />
             <FlowBox color="slate" num="6b" title="問合せフォーム" sub="教習所にのみ送信" />
           </div>
 
           <div className="flex justify-center"><ArrowDown className="w-5 h-5 text-slate-400" /></div>
 
-          <div className="flex items-center gap-3 justify-center flex-wrap">
+          <div className="flex flex-col sm:flex-row items-center gap-3 justify-center sm:flex-wrap">
             <FlowBox color="orange" num="7" title="仮申込完了" sub="申込番号 / 会員自動連携" />
-            <ArrowRight className="w-5 h-5 text-slate-400" />
+            <ArrowRight className="w-5 h-5 text-slate-400 rotate-90 sm:rotate-0 flex-shrink-0" />
             <FlowBox color="slate" num="8" title="マイページ" sub="特典なし。進捗のみ" />
           </div>
 
           <div className="flex justify-center"><ArrowDown className="w-5 h-5 text-slate-400" /></div>
 
-          <div className="flex items-center gap-3 justify-center flex-wrap">
+          <div className="flex flex-col sm:flex-row items-center gap-3 justify-center sm:flex-wrap">
             <FlowBox color="emerald" num="9" title="教習所: 入校待ち" sub="「入校」ボタン" />
-            <ArrowRight className="w-5 h-5 text-slate-400" />
+            <ArrowRight className="w-5 h-5 text-slate-400 rotate-90 sm:rotate-0 flex-shrink-0" />
             <FlowBox color="emerald" num="10" title="教習所: 教習中" sub="「卒業」ボタン" />
           </div>
 
@@ -1970,7 +2148,7 @@ const ScreenFlow = () => (
 
           <div className="flex justify-center"><ArrowDown className="w-5 h-5 text-slate-400" /></div>
 
-          <div className="flex items-center gap-3 justify-center flex-wrap">
+          <div className="flex flex-col sm:flex-row items-center gap-3 justify-center sm:flex-wrap">
             <FlowBox color="sky" num="12" title="ベストBike レンタル" sub="初回5,000円OFF → 以降10%OFF" />
             <FlowBox color="sky" num="13" title="シェアリングオーナー" sub="報酬額5%アップ" />
           </div>
@@ -1988,12 +2166,18 @@ const ScreenFlow = () => (
 );
 
 // ===== 画面14: データフロー図 =====
+// スマホは「送り手 → 受け手」を1行目に小さく出し、その下に内容を全幅で出す
 const DataFlowRow = ({ from, to, event, desc, arrow, highlight }) => (
-  <div className={`grid grid-cols-12 gap-3 items-center py-2 px-3 rounded-lg ${highlight ? 'bg-amber-50 border border-amber-200' : 'bg-slate-50'}`}>
-    <div className="col-span-2 text-xs font-bold text-right">{from}</div>
-    <div className="col-span-1 text-center text-xl text-slate-400">{arrow}</div>
-    <div className="col-span-2 text-xs font-bold">{to}</div>
-    <div className="col-span-7">
+  <div className={`sm:grid sm:grid-cols-12 sm:gap-3 sm:items-center py-2 px-3 rounded-lg ${highlight ? 'bg-amber-50 border border-amber-200' : 'bg-slate-50'}`}>
+    <div className="sm:hidden flex items-center gap-1.5 text-[11px] font-bold text-slate-500 mb-0.5">
+      <span>{from}</span>
+      <span className="text-slate-400 text-sm leading-none">{arrow}</span>
+      <span>{to}</span>
+    </div>
+    <div className="hidden sm:block col-span-2 text-xs font-bold text-right">{from}</div>
+    <div className="hidden sm:block col-span-1 text-center text-xl text-slate-400">{arrow}</div>
+    <div className="hidden sm:block col-span-2 text-xs font-bold">{to}</div>
+    <div className="sm:col-span-7">
       <div className="text-sm font-bold">{event}</div>
       <div className="text-xs text-slate-500">{desc}</div>
     </div>
@@ -2013,21 +2197,21 @@ const TableSchema = ({ name, desc, fields }) => (
 );
 
 const ScreenDataFlow = () => (
-  <div className="bg-slate-50 min-h-full p-8">
+  <div className="bg-slate-50 min-h-full p-4 sm:p-8">
     <div className="max-w-5xl mx-auto">
-      <h1 className="text-3xl font-black mb-2">データフロー図</h1>
+      <h1 className="text-2xl sm:text-3xl font-black mb-2">データフロー図</h1>
       <p className="text-slate-600 mb-8">「卒業」というキートリガーから、特典と紹介料が発生する仕組み</p>
 
-      <div className="bg-white rounded-2xl p-8 border border-slate-200">
-        <div className="grid grid-cols-3 gap-6 mb-8">
+      <div className="bg-white rounded-2xl p-4 sm:p-8 border border-slate-200">
+        <div className="grid grid-cols-3 gap-3 sm:gap-6 mb-8">
           {[
             { icon: User, label: 'ユーザー', sub: 'バイク免許取得希望者', bg: 'bg-sky-100', fg: 'text-sky-600' },
             { icon: Bike, label: 'ベストBike マッチング', sub: '当プラットフォーム', bg: 'bg-gradient-to-br from-sky-500 to-blue-700', fg: 'text-white' },
             { icon: School, label: '提携教習所', sub: '全国24校（仮）', bg: 'bg-emerald-100', fg: 'text-emerald-600' },
           ].map((a) => (
             <div key={a.label} className="text-center">
-              <div className={`w-20 h-20 ${a.bg} rounded-full flex items-center justify-center mx-auto mb-3`}>
-                <a.icon className={`w-10 h-10 ${a.fg}`} />
+              <div className={`w-14 h-14 sm:w-20 sm:h-20 ${a.bg} rounded-full flex items-center justify-center mx-auto mb-3`}>
+                <a.icon className={`w-7 h-7 sm:w-10 sm:h-10 ${a.fg}`} />
               </div>
               <div className="font-bold text-sm">{a.label}</div>
               <div className="text-xs text-slate-500">{a.sub}</div>
@@ -2045,7 +2229,7 @@ const ScreenDataFlow = () => (
           <div className="relative py-2">
             <div className="absolute inset-x-0 top-1/2 border-t-2 border-dashed border-slate-300" />
             <div className="relative flex justify-center">
-              <div className="bg-amber-100 border border-amber-300 rounded-full px-4 py-1 text-xs font-bold text-amber-900">
+              <div className="bg-amber-100 border border-amber-300 rounded-full px-4 py-1 text-xs font-bold text-amber-900 text-center">
                 ⚡ キー操作：教習所が「卒業」ボタンを押す
               </div>
             </div>
@@ -2081,7 +2265,7 @@ const ScreenDataFlow = () => (
         </div>
       </div>
 
-      <div className="mt-6 bg-white rounded-2xl p-8 border border-slate-200">
+      <div className="mt-6 bg-white rounded-2xl p-4 sm:p-8 border border-slate-200">
         <h2 className="text-xl font-black mb-4">主要テーブル（抜粋）</h2>
         <div className="grid md:grid-cols-2 gap-4">
           <TableSchema name="schools" desc="提携教習所" fields={['id', 'name', 'prefecture / city', 'address / phone / email', 'website_url', 'features / notes / free_description', 'status']} />
@@ -2120,16 +2304,86 @@ const CATEGORIES = {
   doc: { label: 'ドキュメント', color: 'text-emerald-600' },
 };
 
+// 画面一覧（PCでは左のサイドバー、スマホでは引き出しメニューに同じものを出す）
+const PrototypeNav = ({ screen, onSelect, status, onReset }) => (
+  <>
+    <div className="m-3 bg-slate-50 border border-slate-200 rounded-xl p-3">
+      <div className="text-[11px] font-bold text-slate-500 mb-1.5">デモ：申込ステータス</div>
+      <StatusPill status={status} />
+      <p className="text-[10px] text-slate-500 mt-2 leading-relaxed">
+        「教習所ダッシュボード」で入校 → 卒業を押すと、マイページに特典が発行されます。
+      </p>
+      {status !== 'provisional' && (
+        <button onClick={onReset} className="mt-2 text-[10px] text-sky-600 font-bold hover:underline">
+          最初から試す
+        </button>
+      )}
+    </div>
+
+    <div className="p-3 pt-0">
+      {Object.entries(CATEGORIES).map(([catId, cat]) => (
+        <div key={catId} className="mb-4">
+          <div className={`text-xs font-bold px-3 py-1 ${cat.color}`}>{cat.label}</div>
+          {SCREEN_LIST.filter((s) => s.category === catId).map((s) => (
+            <button
+              key={s.id}
+              onClick={() => onSelect(s.id)}
+              aria-current={screen === s.id ? 'page' : undefined}
+              className={`w-full flex items-center gap-2 px-3 py-2.5 md:py-2 rounded-lg text-sm text-left mb-0.5 transition ${
+                screen === s.id ? 'bg-slate-900 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100'
+              }`}
+            >
+              <s.icon className="w-4 h-4 flex-shrink-0" />
+              <span className="truncate">{s.label}</span>
+            </button>
+          ))}
+        </div>
+      ))}
+    </div>
+  </>
+);
+
 export default function App() {
   const [screen, setScreen] = useState('landing');
   const [pref, setPref] = useState(REGIONS[0].prefectures[0]);
   const [city, setCity] = useState(CITIES.tokyo[0]);
   const [school, setSchool] = useState(SCHOOLS[0]);
   const [heldFilter, setHeldFilter] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const mainRef = useRef(null);
 
   // デモ用の申込ステータス。教習所ダッシュボードから進められる
   const [status, setStatus] = useState('provisional');
   const [coupons, setCoupons] = useState(null);
+
+  // 画面を切り替えたら先頭から表示する。
+  // スマホではページ全体が、PCではメイン領域がスクロールするので両方を戻す。
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (mainRef.current) mainRef.current.scrollTop = 0;
+  }, [screen]);
+
+  // 引き出しメニューを開いている間は背面をスクロールさせず、Escで閉じられるようにする
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    const onKey = (e) => e.key === 'Escape' && setMenuOpen(false);
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [menuOpen]);
+
+  const selectScreen = (id) => {
+    setScreen(id);
+    setMenuOpen(false);
+  };
+  const resetDemo = () => {
+    setStatus('provisional');
+    setCoupons(null);
+  };
+  const currentLabel = (SCREEN_LIST.find((s) => s.id === screen) || SCREEN_LIST[0]).label;
 
   const handleAdvance = () => setStatus('in_training');
   const handleGraduate = () => {
@@ -2160,59 +2414,80 @@ export default function App() {
     }
   };
 
+  const navTitle = (
+    <>
+      <div className="text-xs font-bold text-slate-400 mb-1">プロトタイプ v1.1</div>
+      <div className="font-black text-sm leading-tight">
+        ベストBike × 教習所
+        <br />
+        マッチング
+      </div>
+    </>
+  );
+
   return (
+    // スマホ（md未満）はページ全体を縦にスクロールさせ、PCは左サイドバー＋メイン領域のスクロールにする
     <div
-      className="flex h-screen bg-slate-100 font-sans"
+      className="min-h-screen flex flex-col md:flex-row md:h-screen bg-slate-100 font-sans"
       style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif' }}
     >
-      <aside className="w-60 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
-        <div className="p-4 border-b border-slate-200">
-          <div className="text-xs font-bold text-slate-400 mb-1">プロトタイプ v1.1</div>
-          <div className="font-black text-sm leading-tight">
-            ベストBike × 教習所
-            <br />
-            マッチング
+      {/* スマホ：プロトタイプ操作用の細いバー。画面一覧は ☰ から開く */}
+      <div className="md:hidden bg-slate-900 text-white">
+        <div className="flex items-center gap-2 px-2 py-1.5">
+          <button
+            data-testid="menu-open"
+            onClick={() => setMenuOpen(true)}
+            aria-label="画面一覧を開く"
+            aria-expanded={menuOpen}
+            className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-white/10 flex-shrink-0"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <div className="min-w-0 flex-1">
+            <div className="text-[10px] font-bold text-slate-400 leading-tight">プロトタイプ v1.1</div>
+            <div className="text-sm font-bold truncate leading-tight">{currentLabel}</div>
+          </div>
+          <div className="flex-shrink-0 pr-1">
+            <StatusPill status={status} />
           </div>
         </div>
+      </div>
 
-        <div className="m-3 bg-slate-50 border border-slate-200 rounded-xl p-3">
-          <div className="text-[11px] font-bold text-slate-500 mb-1.5">デモ：申込ステータス</div>
-          <StatusPill status={status} />
-          <p className="text-[10px] text-slate-500 mt-2 leading-relaxed">
-            「教習所ダッシュボード」で入校 → 卒業を押すと、マイページに特典が発行されます。
-          </p>
-          {status !== 'provisional' && (
-            <button
-              onClick={() => { setStatus('provisional'); setCoupons(null); }}
-              className="mt-2 text-[10px] text-sky-600 font-bold hover:underline"
-            >
-              最初から試す
-            </button>
-          )}
-        </div>
-
-        <div className="p-3 pt-0">
-          {Object.entries(CATEGORIES).map(([catId, cat]) => (
-            <div key={catId} className="mb-4">
-              <div className={`text-xs font-bold px-3 py-1 ${cat.color}`}>{cat.label}</div>
-              {SCREEN_LIST.filter((s) => s.category === catId).map((s) => (
-                <button
-                  key={s.id}
-                  onClick={() => setScreen(s.id)}
-                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-left mb-0.5 transition ${
-                    screen === s.id ? 'bg-slate-900 text-white font-semibold' : 'text-slate-600 hover:bg-slate-100'
-                  }`}
-                >
-                  <s.icon className="w-4 h-4 flex-shrink-0" />
-                  <span className="truncate">{s.label}</span>
-                </button>
-              ))}
-            </div>
-          ))}
-        </div>
+      <aside className="hidden md:block w-60 bg-white border-r border-slate-200 flex-shrink-0 overflow-y-auto">
+        <div className="p-4 border-b border-slate-200">{navTitle}</div>
+        <PrototypeNav screen={screen} onSelect={selectScreen} status={status} onReset={resetDemo} />
       </aside>
 
-      <main className="flex-1 overflow-y-auto">{render()}</main>
+      {menuOpen && (
+        <div className="md:hidden fixed inset-0 z-[60]" role="dialog" aria-modal="true" aria-label="画面一覧">
+          <button
+            className="absolute inset-0 w-full h-full bg-black/50 cursor-default"
+            onClick={() => setMenuOpen(false)}
+            aria-label="画面一覧を閉じる"
+            tabIndex={-1}
+          />
+          <div
+            data-testid="drawer"
+            className="absolute inset-y-0 left-0 w-72 max-w-[85%] bg-white shadow-2xl overflow-y-auto overscroll-contain"
+          >
+            <div className="p-4 border-b border-slate-200 flex items-start justify-between gap-3">
+              <div>{navTitle}</div>
+              <button
+                onClick={() => setMenuOpen(false)}
+                aria-label="閉じる"
+                className="w-9 h-9 -mr-2 -mt-1 rounded-lg flex items-center justify-center text-slate-400 hover:bg-slate-100"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <PrototypeNav screen={screen} onSelect={selectScreen} status={status} onReset={resetDemo} />
+          </div>
+        </div>
+      )}
+
+      <main ref={mainRef} className="flex-1 flex flex-col [&>*]:flex-1 md:block md:overflow-y-auto">
+        {render()}
+      </main>
     </div>
   );
 }
